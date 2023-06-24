@@ -1,0 +1,14 @@
+package ultilitarios;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+public class Utils {
+//usado para converter valores para real
+	
+	static NumberFormat formatandoValores = new DecimalFormat("R$ #,##0.00 ");//0.00 valor inicial
+	public static String doubleToString (Double valor) { //recebe um valor double e transforma pra String
+		return formatandoValores.format(valor);
+	}
+	
+}
