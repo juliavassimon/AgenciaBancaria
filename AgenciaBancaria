@@ -1,0 +1,147 @@
+package AgenciaBancaria;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Agenciabancaria {
+	 
+		static Scanner entrada = new Scanner(System.in);
+		 static ArrayList<Conta> contasBancarias;
+		 
+		 
+		 public static void main(String[] args) {
+			contasBancarias = new ArrayList<Conta>();
+			operacao ();
+			
+		}
+		 public static void operacao() {
+			 System.out.println("---------------------------------------------------");
+			 System.out.println("--------------Bem vindo a agência------------------");
+			 System.out.println("---------Selecione uma operação que deseja---------");
+			 System.out.println("|   Opção 1 - Criar conta       |");
+			 System.out.println("|   Opção 2 - Depositar         |");
+			 System.out.println("|   Opção 3 - Transferir        |");
+			 System.out.println("|   Opção 4 - Sacar             |");
+			 System.out.println("|   Opção 5 - Listar            |");
+			 System.out.println("|   Opção 6 - Sair              |");
+			 
+			 int operacao = entrada.nextInt();
+			 
+			 switch(operacao) {
+			 case 1:
+				 criarConta();
+				 break;
+			 case 2:
+				 depositar();
+				 break;
+			 case 3:
+				 transferir();
+				 break;
+			 case 4:
+				 sacar();
+				 break;
+			 case 5:
+				 listarContas();
+				 break;
+			 case 6:
+				System.out.println("Obrigado pela preferencia!");
+				System.exit(0);
+			default: //se digitar errado, chama o menu dnv (operacao)
+				System.out.println("Opção inválida!");
+				operacao();
+				break;
+			 }			 
+		 }
+		 public static void criarConta() {
+			 System.out.println("\nNome: ");
+			 String nome = entrada.next();
+			 System.out.println("CPF: ");
+			 String cpf = entrada.next();
+			 System.out.println("Email: ");
+			 String email = entrada.next();
+			 Pessoa pessoa = new Pessoa (nome, cpf, email); //instanciar e passar esses dados
+			 Conta conta = new Conta (pessoa);
+			 contasBancarias.add(conta);
+			 System.out.println("Conta criada com sucesso!!");
+			 operacao();
+			 }
+		private  static Conta encontrarConta(int numeroConta) {
+		 Conta conta = null; //se a conta existir e q vai retornar
+		 if(contasBancarias.size()>0) { //precisa ser maior q zero. precisa conter akguma coisa pra ver se o numero da conta existe 
+			 //se tiver, pecorrer cada conta e ver se o numero de usuario tem
+			 for(Conta c: contasBancarias) {
+				 if (c.getNumeroConta() == numeroConta) {
+					 conta = c; //vai ser a conta de numero do usuario (numeroConta)
+				 }
+			 }
+		 }
+		 return conta;
+		 }
+		 public static void depositar () {
+			 System.out.println("Número da conta: ");
+			 int numeroConta = entrada.nextInt();
+			 Conta conta = encontrarConta(numeroConta);
+		if (conta != null) {
+			System.out.println("Qual valor deseja depositar?");
+			Double valorDeposito = entrada.nextDouble();
+			conta.depositar(valorDeposito);
+			System.out.println("Valor depositado com sucesso!!");
+		}
+		else {
+			System.out.println("A conta não foi encontrada");
+			operacao();
+		}
+ }
+		 public static void sacar() {
+			 System.out.println("Número da conta: ");
+			 int numeroConta = entrada.nextInt();
+			 Conta conta = encontrarConta(numeroConta);
+				if (conta != null) { //se a conta existe
+					System.out.println("Qual valor deseja sacar?");
+					Double valorSaque = entrada.nextDouble();
+					conta.sacar(valorSaque);
+					//System.out.println("Valor sacado com sucesso!!");
+				}
+				else {
+					System.out.println("A conta não foi encontrada");
+					
+				}	operacao();		 
+		 }
+		 public static void transferir () {
+			 	System.out.println("Número da conta do remetente: ");
+			 	int numeroRemetente = entrada.nextInt();
+			 	Conta contaRemetente = encontrarConta(numeroRemetente); //numero da conta q quero enviar
+			 	if (contaRemetente != null) {
+			 		System.out.println("Número da conta do destinatario: ");
+			 		int numeroDestinatario = entrada.nextInt();
+			 		Conta contaDestinatario = encontrarConta(numeroDestinatario);
+			 		if (contaDestinatario != null) {
+			 			System.out.println("Valor da transferência: ");
+			 			Double valor = entrada.nextDouble();
+			 			contaRemetente.transferir(contaDestinatario, valor);
+			 			System.out.println("Tranferência realizada com sucesso!");
+			 		}
+			 			
+			 		}
+			 	else {
+			 		System.out.println("Não foi possível realizar a transferência!!");
+			 	}
+			 	operacao();
+			 	
+		 }
+		 public static void listarContas() {
+			 if(contasBancarias.size()>0) {
+				 for (Conta conta: contasBancarias) {//para cada conta na minha lista bancaria, eu imprimo cada uma 
+					 System.out.println(conta);
+				 }
+			 }
+			 else {
+				 System.out.println("Não há contas cadastradas!");
+			 }
+			 operacao();
+		 }
+}
+
+
+
+
